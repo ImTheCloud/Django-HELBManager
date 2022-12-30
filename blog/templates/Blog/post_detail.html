@@ -1,0 +1,72 @@
+{% extends "blog/base.html" %}
+
+{% block content %} 
+
+       <article class="media content-section">
+        <img class="rounded-circle article-img" src="{{ object.author.profile.image.url}}">
+    <div class="media-body">
+    <div class="article-metadata">
+      <a class="mr-2" href="#">{{ object.author }}</a>
+      <small class="text-muted">{{ object.date_posted|date:"F d,Y" }}</small>
+
+
+      {% if object.author == user %}
+      <div>
+      <a class="btn btn_secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Update</a>
+      <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete</a>
+      </div>
+      <h2 class="article-title"> {{ object.title }}</h2>
+      <p>Contributor : </p>
+      <p class="article-title"> {{ object.get_all_contributor }}</p>
+      <div class="app">
+
+        <div class="lists">
+  
+           <div class="list"><div class="list-item2">ALL TASKS AND SUBTASKS</div>
+            {% for task_subtask in object.get_all_tasks %}
+                <div class="list-item" draggable="true">{{ task_subtask }} </div>
+            {% endfor %} 
+          </div>
+            {% for status in object.get_all_status %}
+            <div class="list">
+                <div class="list-item2">{{ status }} </div>
+            </div>
+            {% endfor %}
+          </div>
+  
+        </div>
+      {% endif %}
+
+      {% for Contributor in object.get_all_contributor %}
+      {% comment %} {{ Contributor }}
+      {{ user }} {% endcomment %}
+       {% if Contributor == user %}
+           
+            <h2 class="article-title"> {{ object.title }}</h2>
+            <p>Contributor : </p>
+            <p class="article-title"> {{ Contributor }}</p>
+            <div class="app">
+    
+              <div class="lists">
+        
+                 <div class="list"><div class="list-item2">ALL TASKS AND SUBTASKS</div>
+                  {% for task_subtask in object.get_all_tasks %}
+                      <div class="list-item" draggable="true">{{ task_subtask }} </div>
+                  {% endfor %} 
+                </div>
+                  {% for status in object.get_all_status %}
+                  <div class="list">
+                      <div class="list-item2">{{ status }} </div>
+                  </div>
+                  {% endfor %}
+                </div>
+        
+              </div>
+            
+            {% endif %}
+          {% endfor %} 
+
+        
+</article>
+
+{% endblock %}
