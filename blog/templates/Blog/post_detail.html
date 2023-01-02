@@ -9,6 +9,7 @@
       <a class="mr-2" href="#">{{ object.author }}</a>
       <small class="text-muted">{{ object.date_posted|date:"F d,Y" }}</small>
 
+ {% comment %} si c le chef il fera le drag n drop et pourra modifier et suprimer les taches {% endcomment %}
 
       {% if object.author == user %}
       <div>
@@ -16,66 +17,52 @@
       <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete</a>
       </div>
       <h2 class="article-title"> {{ object.title }}</h2>
-      <p>Contributor : </p>
-      <p class="article-title"> {{ object.get_all_contributor }}</p>
-      
 
+      <p>Project leader :  {{ object.author }}</p>
+      <p>Contributor : {{ object.get_all_contributor }}</p>
+  
+      
 
       <div class="app">
-
         <div class="lists">
   
-           <div class="list">
-            <div class="list-item2">ALL TASKS AND SUBTASKS</div>
-
-            {% for task_subtask in object.get_all_tasks %}
+          {% for task_subtask in object.get_all_tasks %}
             <div class="list-item"  id="item-{{ forloop.counter }}" draggable="true">{{ task_subtask }}</div>
-        {% endfor %}
+          {% endfor %}
         
-
+          {% for status in object.get_all_status %}    
+            <div class="list" id="list{{ forloop.counter }}">{{ status }}</div>
+          {% endfor %} 
 
           </div>
-
-            {% for status in object.get_all_status %}
-            <div class="list">
-              <div class="list-item2"  id="item-{{ forloop.counter }}">{{ status }}</div>
-            </div>
-            
-            {% endfor %}
-          </div>
-  
         </div>
+       
       {% endif %}
-
-      
-{% comment %} La c'est pour l'assisgnation en  bas  {% endcomment %}
-      {% for Contributor in object.get_all_contributor %}
-      {% comment %} {{ Contributor }}
-      {{ user }} {% endcomment %}
-       {% if Contributor == user %}
-           
-            <h2 class="article-title"> {{ object.title }}</h2>
-            <p>Contributor : </p>
-            <p class="article-title"> {{ Contributor }}</p>
-            
-            <div class="app">
+     
+ {% comment %} Si c'est un contributeur il fera la meme chose sans modifier ou suprimer les taches , sinon il fera rien {% endcomment %}
     
-              <div class="lists">
-        
-                 <div class="list"><div class="list-item2">ALL TASKS AND SUBTASKS</div>
-                  {% for task_subtask in object.get_all_tasks %}
-                      <div class="list-item" draggable="true">{{ task_subtask }} </div>
-                  {% endfor %} 
-                </div>
-                
-                  {% for status in object.get_all_status %}
-                  <div class="list">
-                      <div class="list-item2">{{ status }} </div>
-                  </div>
-                  {% endfor %}
-                </div>
-        
-              </div>
+      {% for Contributor in object.get_all_contributor %}
+       {% if Contributor == user.username %}
+           
+       <h2 class="article-title"> {{ object.title }}</h2>
+      <p>Project leader :  {{ object.author }}</p>
+      <p>Contributor : {{ object.get_all_contributor }}</p>
+  
+       
+ 
+       <div class="app">
+         <div class="lists">
+   
+           {% for task_subtask in object.get_all_tasks %}
+             <div class="list-item"  id="item-{{ forloop.counter }}" draggable="true">{{ task_subtask }}</div>
+           {% endfor %}
+         
+           {% for status in object.get_all_status %}    
+             <div class="list" id="list{{ forloop.counter }}">{{ status }}</div>
+           {% endfor %} 
+ 
+           </div>
+         </div>
             
             {% endif %}
           {% endfor %} 
