@@ -18,25 +18,37 @@
       <h2 class="article-title"> {{ object.title }}</h2>
       <p>Contributor : </p>
       <p class="article-title"> {{ object.get_all_contributor }}</p>
+      
+
+
       <div class="app">
 
         <div class="lists">
   
-           <div class="list"><div class="list-item2">ALL TASKS AND SUBTASKS</div>
+           <div class="list">
+            <div class="list-item2">ALL TASKS AND SUBTASKS</div>
+
             {% for task_subtask in object.get_all_tasks %}
-                <div class="list-item" draggable="true">{{ task_subtask }} </div>
-            {% endfor %} 
+            <div class="list-item"  id="item-{{ forloop.counter }}" draggable="true">{{ task_subtask }}</div>
+        {% endfor %}
+        
+
+
           </div>
+
             {% for status in object.get_all_status %}
             <div class="list">
-                <div class="list-item2">{{ status }} </div>
+              <div class="list-item2"  id="item-{{ forloop.counter }}">{{ status }}</div>
             </div>
+            
             {% endfor %}
           </div>
   
         </div>
       {% endif %}
 
+      
+{% comment %} La c'est pour l'assisgnation en  bas  {% endcomment %}
       {% for Contributor in object.get_all_contributor %}
       {% comment %} {{ Contributor }}
       {{ user }} {% endcomment %}
@@ -45,6 +57,7 @@
             <h2 class="article-title"> {{ object.title }}</h2>
             <p>Contributor : </p>
             <p class="article-title"> {{ Contributor }}</p>
+            
             <div class="app">
     
               <div class="lists">
@@ -54,6 +67,7 @@
                       <div class="list-item" draggable="true">{{ task_subtask }} </div>
                   {% endfor %} 
                 </div>
+                
                   {% for status in object.get_all_status %}
                   <div class="list">
                       <div class="list-item2">{{ status }} </div>
