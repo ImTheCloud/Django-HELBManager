@@ -10,25 +10,24 @@
       <small class="text-muted">{{ object.date_posted|date:"F d,Y" }}</small>
 
 
- {% comment %} si c le chef il fera le drag n drop et pourra modifier et suprimer les taches {% endcomment %}
-
       {% if object.author == user %}
       <div>
       <a class="btn btn_secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Update</a>
       <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete</a>
       </div>
-      <h2 class="article-title"> {{ object.title }}</h2>
+      {% endif %}
 
+      <h2 class="article-title"> {{ object.title }}</h2>
       <p>Project leader :  {{ object.author }}</p>
       <p>Contributor : {{ object.get_all_contributor }}</p>
-  
-      
 
+    
+      {% if  object.author == user %}
       <div class="app">
         <div class="lists">
   
           {% for task_subtask in object.get_all_tasks %}
-            <div class="list-item" id="item-{{ forloop.counter }}" draggable="true">{{ task_subtask }}</div>
+            <div class="list-item"  id="item-{{ forloop.counter }}" draggable="true">{{ task_subtask }}</div>
           {% endfor %}
         
           {% for status in object.get_all_status %}    
@@ -37,36 +36,35 @@
 
           </div>
         </div>
-       
-      {% endif %}
-     
- {% comment %} Si c'est un contributeur il fera la meme chose sans modifier ou suprimer les taches , sinon il fera rien {% endcomment %}
-    
-      {% for Contributor in object.get_all_contributor %}
-       {% if Contributor == user.username %}
-           
-       <h2 class="article-title"> {{ object.title }}</h2>
-      <p>Project leader :  {{ object.author }}</p>
-      <p>Contributor : {{ object.get_all_contributor }}</p>
+
+        {% else %}
+
+        {% for Contributor in object.get_all_contributor %}
+        {% if Contributor == user.username %}
   
-       
- 
-       <div class="app">
-         <div class="lists">
-   
-           {% for task_subtask in object.get_all_tasks %}
-             <div class="list-item"  id="item-{{ forloop.counter }}" draggable="true">{{ task_subtask }}</div>
-           {% endfor %}
-         
-           {% for status in object.get_all_status %}    
-             <div class="list" id="list{{ forloop.counter }}">{{ status }}</div>
-           {% endfor %} 
- 
-           </div>
-         </div>
-            
-            {% endif %}
-          {% endfor %} 
+        <div class="app">
+          <div class="lists">
+    
+            {% for task_subtask in object.get_all_tasks %}
+              <div class="list-item"  id="item-{{ forloop.counter }}" draggable="true">{{ task_subtask }}</div>
+            {% endfor %}
+          
+            {% for status in object.get_all_status %}    
+              <div class="list" id="list{{ forloop.counter }}">{{ status }}</div>
+            {% endfor %} 
+  
+            </div>
+          </div>
+             
+             {% endif %}
+        {% endfor %} 
+
+           {% endif %}
+
+
+
+
+
 
         
 </article>

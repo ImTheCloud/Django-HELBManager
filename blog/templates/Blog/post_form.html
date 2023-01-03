@@ -2,6 +2,8 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
+
+
 <div class="content-section">
    <form method="POST">
       {% csrf_token %}
@@ -26,17 +28,11 @@
 
      {{ form|crispy }}
 
-     <script>
-      // Fonction qui affiche un message de bienvenue
-      function afficherMessage() {
-        alert("Project update !");
-      }
-    </script>
-    
+
    </fieldset>
    <div class="form-group">
      
-      <button class="btn btn-outline-info" onclick="afficherMessage()" type="submit"> Update the project</button>
+      <button class="btn btn-outline-info" onclick="afficherMessage()" type="submit"> Submit</button>
      
    </div>
 

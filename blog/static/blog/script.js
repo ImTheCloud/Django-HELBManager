@@ -1,5 +1,5 @@
-function afficherPopup(targetList) {
-  alert(`Task or subtask moved to: ${targetList.id}`);
+function afficherPopup() {
+  alert(`Task or subtask moved:`);
 }
 
 
@@ -8,27 +8,42 @@ const lists = document.querySelectorAll('.list');
 
 let draggedItem = null;
 
+
 function saveDraggedItemLocation(e) {
   console.log('saveDraggedItemLocation called');
+
   // Empêcher le comportement par défaut de l'événement drop
   e.preventDefault();
   // Récupérer l'élément de liste cible de l'événement drop
   const targetList = e.target;
   // Vérifier que l'élément glissé-déposé est défini
   if (draggedItem && targetList.matches('.list')) {
-	console.log(`Dragged item: ${draggedItem.id}`);
+
+ 
+    console.log(`Dragged item: ${draggedItem.id}`);
     // Enregistrer l'emplacement de l'élément glissé-déposé dans le stockage local
     localStorage.setItem(draggedItem.id, targetList.id);
 
     // Ajouter l'élément glissé-déposé à l'élément de liste cible
     targetList.append(draggedItem);
-    
-    afficherPopup(targetList);
-    
   
+  let elementAdded = true;
+  localStorage.setItem('elementAdded', elementAdded);
 
+    
   }
+  
 }
+
+
+
+
+
+
+
+
+
+
 
 function restoreDraggedItemLocations() {
   console.log('restoreDraggedItemLocations function called');
@@ -69,7 +84,9 @@ for (let i = 0; i < list_items.length; i++) {
       draggedItem = null;
     }, 0);
   });
+
   }
+
 for (let j = 0; j < lists.length; j++) {
   const list = lists[j];
 
@@ -87,6 +104,7 @@ for (let j = 0; j < lists.length; j++) {
   });
 
   list.addEventListener('drop', saveDraggedItemLocation);
+
 }
 
 // Lorsque la page est chargée, restaurer l'emplacement de chaque élément glissé-déposé
