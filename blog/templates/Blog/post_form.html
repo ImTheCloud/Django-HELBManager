@@ -26,15 +26,18 @@
 
      {{ form|crispy }}
 
-
+     <script>
+      // Fonction qui affiche un message de bienvenue
+      function afficherMessage() {
+        alert("Project update !");
+      }
+    </script>
     
    </fieldset>
    <div class="form-group">
-      {% if object.author == user %}
-      <button class="btn btn-outline-info" type="submit"> Update the project</button>
-      {% else %}
-      <button class="btn btn-outline-info" type="submit"> Create the project</button>
-      {% endif %}
+     
+      <button class="btn btn-outline-info" onclick="afficherMessage()" type="submit"> Update the project</button>
+     
    </div>
 
 </form>

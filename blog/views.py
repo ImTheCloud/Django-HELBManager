@@ -1,3 +1,4 @@
+from mailbox import Message
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import (
@@ -10,14 +11,6 @@ from django.views.generic import (
 ) 
 from .models import Post
 from django import forms
-
-
-class CommentForm(forms.Form):
-    name = forms.CharField()
-    url = forms.URLField()
-    comment = forms.CharField(widget=forms.Textarea)
-    
-
 
 
 def home(request):

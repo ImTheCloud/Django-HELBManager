@@ -20,7 +20,8 @@ function saveDraggedItemLocation(e) {
 
     // Ajouter l'élément glissé-déposé à l'élément de liste cible
     targetList.append(draggedItem);
-	console.log(`Dragged item moved to: ${targetList.id}`);
+    alert(`Task or subtask moved to: ${targetList.id}`);
+  
 
   }
 }

@@ -5,20 +5,40 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 
- 
 class Post(models.Model):
     
-    
-    title = models.CharField(max_length=100)
-    contributor = models.CharField(max_length=100)
-    tasks_subtasks =  models.TextField()
-    status = models.TextField()
-
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     
+    title = models.CharField(max_length=100)
+    contributor = models.CharField(max_length=100)
+   
+    status = models.TextField()
+    
+    tasks_subtasks =  models.TextField()
+
+  
+    
+    
+    def get_all_tasks(self):
+        tasks_subtasks_inTab = []
+        task_subtask = ""
+        i = 0
+        for letter in self.tasks_subtasks:
+            if letter == ';':
+                 tasks_subtasks_inTab += [task_subtask]
+                 task_subtask = ""
+                 i+=1
+            else:
+                task_subtask+= letter
+        tasks_subtasks_inTab +=[task_subtask]
+        
+        return tasks_subtasks_inTab    
+    
     class Meta:
         ordering = ['contributor']
+        
+        
     
     def get_all_contributor(self):
         contributor_inTab = []
@@ -53,20 +73,7 @@ class Post(models.Model):
     
     
     
-    def get_all_tasks(self):
-        tasks_subtasks_inTab = []
-        task_subtask = ""
-        i = 0
-        for letter in self.tasks_subtasks:
-            if letter == ';':
-                 tasks_subtasks_inTab += [task_subtask]
-                 task_subtask = ""
-                 i+=1
-            else:
-                task_subtask+= letter
-        tasks_subtasks_inTab +=[task_subtask]
-        
-        return tasks_subtasks_inTab      
+     
       
     
     def __str__(self):
