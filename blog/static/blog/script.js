@@ -1,3 +1,8 @@
+function afficherPopup(targetList) {
+  alert(`Task or subtask moved to: ${targetList.id}`);
+}
+
+
 const list_items = document.querySelectorAll('.list-item');
 const lists = document.querySelectorAll('.list');
 
@@ -7,12 +12,9 @@ function saveDraggedItemLocation(e) {
   console.log('saveDraggedItemLocation called');
   // Empêcher le comportement par défaut de l'événement drop
   e.preventDefault();
-
   // Récupérer l'élément de liste cible de l'événement drop
   const targetList = e.target;
-
   // Vérifier que l'élément glissé-déposé est défini
-
   if (draggedItem && targetList.matches('.list')) {
 	console.log(`Dragged item: ${draggedItem.id}`);
     // Enregistrer l'emplacement de l'élément glissé-déposé dans le stockage local
@@ -20,7 +22,9 @@ function saveDraggedItemLocation(e) {
 
     // Ajouter l'élément glissé-déposé à l'élément de liste cible
     targetList.append(draggedItem);
-    alert(`Task or subtask moved to: ${targetList.id}`);
+    
+    afficherPopup(targetList);
+    
   
 
   }
