@@ -1,111 +1,99 @@
+//1 : https://www.youtube.com/watch?v=tZ45HZAkbLc voici la video d'ou j'ai pu effectuer le drag & drop mais, il est modifier
+// car l'enregistrement ne se faisait pas lorsque je rafraichissait la page, il y a egalement des commentaire d'explication 
+
 function afficherPopup() {
+  // Affiche une fenêtre de notification indiquant que la tâche ou la sous-tâche a été déplacée
   alert(`Task or subtask moved:`);
 }
 
-
+// Récupère tous les éléments de liste de l'application
 const list_items = document.querySelectorAll('.list-item');
+// Récupère tous les éléments de liste de l'application
 const lists = document.querySelectorAll('.list');
 
-let draggedItem = null;
-
-
+// Fonction pour enregistrer l'emplacement de l'élément  dans le stockage local
 function saveDraggedItemLocation(e) {
   console.log('saveDraggedItemLocation called');
-
-  // Empêcher le comportement par défaut de l'événement drop
   e.preventDefault();
-  // Récupérer l'élément de liste cible de l'événement drop
+
   const targetList = e.target;
-  // Vérifier que l'élément glissé-déposé est défini
+  // Vérifier que l'élément glissé-déposé est défini et que l'élément cible est bien une liste
   if (draggedItem && targetList.matches('.list')) {
-
- 
     console.log(`Dragged item: ${draggedItem.id}`);
-    // Enregistrer l'emplacement de l'élément glissé-déposé dans le stockage local
+   
     localStorage.setItem(draggedItem.id, targetList.id);
-
-    // Ajouter l'élément glissé-déposé à l'élément de liste cible
-    targetList.append(draggedItem);
-  
-  let elementAdded = true;
-  localStorage.setItem('elementAdded', elementAdded);
-
     
+    targetList.append(draggedItem);
+    let elementAdded = true;
+
+    localStorage.setItem('elementAdded', elementAdded);
   }
-  
 }
 
-
-
-
-
-
-
-
-
-
-
+// Fonction pour restaurer l'emplacement de chaque élément de liste en se basant sur les données enregistrées dans le stockage local
 function restoreDraggedItemLocations() {
   console.log('restoreDraggedItemLocations function called');
-  // Récupérer tous les éléments de liste
+  // Récupérer tous les éléments de liste de l'application
   const list_items = document.querySelectorAll('.list-item');
 
   // Pour chaque élément de liste, récupérer son emplacement enregistré dans le stockage local
   for (const list_item of list_items) {
+    // Récupérer l'emplacement enregistré dans le stockage local pour l'élément de liste courant
     const location = localStorage.getItem(list_item.id);
-	console.log(`location for ${list_item.id}: ${location}`);
+    console.log(`location for ${list_item.id}: ${location}`);
     // Si un emplacement a été enregistré pour cet élément, ajouter l'élément à l'élément de liste correspondant
     if (location) {
-      // Récupérer l'élément de liste cible
+      // Récupérer l'élément de liste cible à partir de son ID
       const targetList = document.getElementById(location);
-      // Vérifier que l'élément cible est bien une liste (et non un élément de liste-item)
+      // Vérifier que l'élément cible est bien une liste
       if (targetList.classList.contains('list')) {
         console.log(`adding ${list_item.id} to ${location}`);
-
+        // Ajouter l'élément de liste courant à l'élément de liste cible
         targetList.append(list_item);
       }
     }
   }
 }
 
-for (let i = 0; i < list_items.length; i++) {
-  const item = list_items[i];
 
+// Ajouter des gestionnaires d'événements de glisser-déposer aux éléments de liste
+for (let i = 0; i < list_items.length; i++) {
+  // Récupérer l'élément de liste courant
+  const item = list_items[i];
   item.addEventListener('dragstart', function () {
+    // Définir l'élément de liste courant comme l'élément glissé-déposé
     draggedItem = item;
     setTimeout(function () {
       item.style.display = 'none';
     }, 0);
   });
 
+  // Gestionnaire d'événement pour la fin du drag & drop d'un élément de liste
   item.addEventListener('dragend', function () {
+    // Afficher l'élément de liste à nouveau une fois le  drag & drop terminé
     setTimeout(function () {
       draggedItem.style.display = 'block';
       draggedItem = null;
     }, 0);
   });
+}
 
-  }
-
+// Ajouter des gestionnaires d'événements dedrag & drop aux éléments de liste
 for (let j = 0; j < lists.length; j++) {
   const list = lists[j];
-
   list.addEventListener('dragover', function (e) {
+    // Empêcher le comportement par défaut de l'événement
     e.preventDefault();
   });
 
   list.addEventListener('dragenter', function (e) {
-    e.preventDefault();
-    this.style.backgroundColor = 'rgba(0, 0, 0, 0.2)';
-  });
+      e.preventDefault();
 
-  list.addEventListener('dragleave', function (e) {
-    this.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
-  });
-
-  list.addEventListener('drop', saveDraggedItemLocation);
-
-}
-
-// Lorsque la page est chargée, restaurer l'emplacement de chaque élément glissé-déposé
-window.addEventListener('load', restoreDraggedItemLocations);
+    });
+  
+    list.addEventListener('drop', saveDraggedItemLocation);
+  }
+  
+  // Lorsque la page est chargée, restaurer l'emplacement de chaque élément glissé-déposé en se basant sur les données enregistrées dans le stockage local
+  window.addEventListener('load', restoreDraggedItemLocations);
+  
