@@ -1,10 +1,6 @@
 //1 : https://www.youtube.com/watch?v=tZ45HZAkbLc voici la video d'ou j'ai pu effectuer le drag & drop mais, il est modifier
 // car l'enregistrement ne se faisait pas lorsque je rafraichissait la page, il y a egalement des commentaire d'explication 
 
-function afficherPopup() {
-  // Affiche une fenêtre de notification indiquant que la tâche ou la sous-tâche a été déplacée
-  alert(`Task or subtask moved:`);
-}
 
 
 
@@ -12,24 +8,22 @@ const list_items = document.querySelectorAll('.list-item');
 const lists = document.querySelectorAll('.list');
 const consoleDiv = document.querySelector('.console');
 
-// Fonction pour enregistrer l'emplacement de l'élément  dans le stockage local
+// Function to save the element's location to local storage
 function saveDraggedItemLocation(e) {
- 
   e.preventDefault();
 
   const targetList = e.target;
-  // Vérifier que l'élément glissé-déposé est défini et que l'élément cible est bien une liste
+  // Check that the dragged item is defined and that the target element is a list
   if (draggedItem && targetList.matches('.list')) {
     localStorage.setItem(draggedItem.id, targetList.id);
     consoleDiv.innerHTML += `The status of task ${draggedItem.id}  has been moved to ${targetList.id}</br>`
     targetList.append(draggedItem);
-    let elementAdded = true;
-    localStorage.setItem('elementAdded', elementAdded);
+  
+    // Save the console message to local storage
+    localStorage.setItem('consoleMessage', consoleDiv.innerHTML);
   }
 }
-
-
-
+  consoleDiv.innerHTML = localStorage.getItem('consoleMessage');
 
 
 
@@ -100,4 +94,9 @@ for (let j = 0; j < lists.length; j++) {
   
   // Lorsque la page est chargée, restaurer l'emplacement de chaque élément glissé-déposé en se basant sur les données enregistrées dans le stockage local
   window.addEventListener('load', restoreDraggedItemLocations);
+
+
+
+
+  
   

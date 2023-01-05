@@ -25,15 +25,32 @@
       <p>Project leader :  {{ object.author }}</p>
       <p>Contributor : {{ object.get_all_contributor }}</p>
       
-      <p>Here is the order in which the tasks must be performed according to {{ object.author }}</p>
+      
+  
+     
+      
+      
+      {% if  object.author == user %}
+     
+      <div class="priority">
+        <h4>Here is the order in which the tasks must be performed according to {{ object.author }}</h4>
+
       {% for priority in object.get_all_priority %}    
           <div>{{ priority }}</div>
       {% endfor %} 
+    </div>
     </br>
-      <div class="console"></div>
+    <h4>Notifications</h4>
+      <div class="console">  </div>
+      <button class="btn btn-danger btn-sm mt-1 mb-1" onclick="clearConsole()">Deletes notifications</button>
 
-      
-      {% if  object.author == user %}
+        <script>
+        function clearConsole() {
+          consoleDiv.innerHTML = '';
+        }
+        </script>  
+
+
       <div class="app">
         <div class="lists">
   
@@ -52,7 +69,24 @@
 
         {% for Contributor in object.get_all_contributor %}
         {% if Contributor == user.username %}
+        <div class="priority">
+          <h4>Here is the order in which the tasks must be performed according to {{ object.author }}</h4>
   
+        {% for priority in object.get_all_priority %}    
+            <div>{{ priority }}</div>
+        {% endfor %} 
+      </div>
+      </br>
+      <h4>Notifications</h4>
+      <div class="console"> </div>
+
+           <button class="btn btn-danger btn-sm mt-1 mb-1" onclick="clearConsole()">Deletes notifications</button>
+
+           <script>
+           function clearConsole() {
+             consoleDiv.innerHTML = '';
+           }
+           </script>
         <div class="app">
           <div class="lists">
     
@@ -61,7 +95,7 @@
             {% endfor %}
           
             {% for status in object.get_all_status %}    
-              <div class="list" id="list-{{ forloop.counter }}">{{ status }}</div>
+              <div class="list" id="list{{ forloop.counter }}">{{ status }}</div>
             {% endfor %} 
   
             </div>

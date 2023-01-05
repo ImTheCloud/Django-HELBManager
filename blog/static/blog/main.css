@@ -18,6 +18,20 @@ body {
 	height: 100vh;
 }
 
+  .console {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 20px;
+  }
+
+  .priority {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 20px;
+  }
+
 header {
 	display: flex;
 	justify-content: center;
@@ -139,3 +153,5 @@ a.article-title:hover {
 .account-heading {
   font-size: 2.5rem;
 }
+
+

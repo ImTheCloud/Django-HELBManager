@@ -1,31 +1,52 @@
 {% extends "blog/base.html" %}
-{% load crispy_forms_tags %}
 {% block content %}
 
-<html>
+<h6 class="user-connected" >{{ user }}</h6>
+
+
+<div id="chat"</div>
+        <form>
+            <input type="text" id="message" />
+            <button type="button" id="send">Send</button>
+            <button type="button" id="delete-btn">Delete last message</button>
+        </form> 
+
+<script>
+const userNameElement = document.querySelector('.user-connected');
+const userName = userNameElement.textContent;
+const input = document.getElementById('message');
+const chatDiv = document.getElementById('chat');
+const sendButton = document.getElementById('send');
+const deleteButton = document.getElementById('delete-btn');
+
+chatDiv.style.overflow = 'scroll';
+chatDiv.style.height = '400px';
+
+let messages = JSON.parse(localStorage.getItem('messages')) || [];
+
+messages.forEach(message => {
+  chatDiv.innerHTML += `${message}<br>`;
+});
+
+sendButton.addEventListener('click', () => {
+  const date = new Date();
+  const time = date.toLocaleTimeString();
+  const message = input.value;
+  const fullMessage = `${userName} (${time}): ${message}`;
+
+  messages.push(fullMessage);
+  localStorage.setItem('messages', JSON.stringify(messages));
+  chatDiv.innerHTML += `${fullMessage}<br>`;
+});
+
+deleteButton.addEventListener('click', () => {
+  const lastMessage = messages.pop();
+  localStorage.setItem('messages', JSON.stringify(messages));
+  chatDiv.innerHTML = chatDiv.innerHTML.replace(`${lastMessage}<br>`, '');
+});
+</script>
 
 
 
-    <script>
-        window.onload = function() {
-            // Récupérer la valeur de elementAdded à partir du stockage local
-            let elementAdded = JSON.parse(localStorage.getItem('elementAdded'));
 
-            if (elementAdded) {
-                alert('Drag-n-Drop changed!');
-
-                // Mettre à jour la valeur de elementAdded dans le stockage local
-                elementAdded = false;
-                localStorage.setItem('elementAdded', elementAdded);  
-                console.log(elementAdded );
-            }
-        }
-    </script>
-
-    
-
-    <!-- Autres éléments HTML -->
-</html>
-
-
-{% endblock %}
+{% endblock content %}
