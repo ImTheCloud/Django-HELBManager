@@ -16,8 +16,23 @@ class Post(models.Model):
     status = models.TextField()
     
     tasks_subtasks =  models.TextField()
+    
+    priority =  models.TextField()
 
-  
+    def get_all_priority(self):
+        priorityInTab = []
+        priority = ""
+        i = 0
+        for letter in self.tasks_subtasks:
+            if letter == ';':
+                 priorityInTab += [priority]
+                 priority = ""
+                 i+=1
+            else:
+                priority+= letter
+        priorityInTab +=[priority]
+        
+        return priorityInTab    
     
     
     def get_all_tasks(self):

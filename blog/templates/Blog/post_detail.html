@@ -21,7 +21,11 @@
       <p>Project leader :  {{ object.author }}</p>
       <p>Contributor : {{ object.get_all_contributor }}</p>
 
-    
+      {% for priority in object.ge %}    
+      <div class="list" >{{ priority }}</div>
+      {% endfor %} 
+
+
       {% if  object.author == user %}
       <div class="app">
         <div class="lists">

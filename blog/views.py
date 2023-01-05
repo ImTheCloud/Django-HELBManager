@@ -34,7 +34,7 @@ class UserForm(forms.ModelForm):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields =['title','contributor','tasks_subtasks','status']
+    fields =['title','contributor','tasks_subtasks','status','priority']
     
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -42,7 +42,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields =['title','contributor','tasks_subtasks','status']
+    fields =['title','contributor','tasks_subtasks','status','priority']
     
     def form_valid(self, form):
         form.instance.author = self.request.user
