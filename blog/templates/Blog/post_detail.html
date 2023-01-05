@@ -17,15 +17,22 @@
       </div>
       {% endif %}
 
+
+
+
+
       <h2 class="article-title"> {{ object.title }}</h2>
       <p>Project leader :  {{ object.author }}</p>
       <p>Contributor : {{ object.get_all_contributor }}</p>
-
-      {% for priority in object.ge %}    
-      <div class="list" >{{ priority }}</div>
+      
+      <p>Here is the order in which the tasks must be performed according to {{ object.author }}</p>
+      {% for priority in object.get_all_priority %}    
+          <div>{{ priority }}</div>
       {% endfor %} 
+    </br>
+      <div class="console"></div>
 
-
+      
       {% if  object.author == user %}
       <div class="app">
         <div class="lists">

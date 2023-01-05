@@ -6,29 +6,33 @@ function afficherPopup() {
   alert(`Task or subtask moved:`);
 }
 
-// Récupère tous les éléments de liste de l'application
+
+
 const list_items = document.querySelectorAll('.list-item');
-// Récupère tous les éléments de liste de l'application
 const lists = document.querySelectorAll('.list');
+const consoleDiv = document.querySelector('.console');
 
 // Fonction pour enregistrer l'emplacement de l'élément  dans le stockage local
 function saveDraggedItemLocation(e) {
-  console.log('saveDraggedItemLocation called');
+ 
   e.preventDefault();
 
   const targetList = e.target;
   // Vérifier que l'élément glissé-déposé est défini et que l'élément cible est bien une liste
   if (draggedItem && targetList.matches('.list')) {
-    console.log(`Dragged item: ${draggedItem.id}`);
-   
     localStorage.setItem(draggedItem.id, targetList.id);
-    
+    consoleDiv.innerHTML += `The status of task ${draggedItem.id}  has been moved to ${targetList.id}</br>`
     targetList.append(draggedItem);
     let elementAdded = true;
-
     localStorage.setItem('elementAdded', elementAdded);
   }
 }
+
+
+
+
+
+
 
 // Fonction pour restaurer l'emplacement de chaque élément de liste en se basant sur les données enregistrées dans le stockage local
 function restoreDraggedItemLocations() {

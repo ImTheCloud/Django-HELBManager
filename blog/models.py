@@ -14,16 +14,17 @@ class Post(models.Model):
     contributor = models.CharField(max_length=100)
    
     status = models.TextField()
-    
     tasks_subtasks =  models.TextField()
-    
     priority =  models.TextField()
+    
+    
+    
 
     def get_all_priority(self):
         priorityInTab = []
         priority = ""
         i = 0
-        for letter in self.tasks_subtasks:
+        for letter in self.priority:
             if letter == ';':
                  priorityInTab += [priority]
                  priority = ""
@@ -33,6 +34,7 @@ class Post(models.Model):
         priorityInTab +=[priority]
         
         return priorityInTab    
+    
     
     
     def get_all_tasks(self):
@@ -85,11 +87,7 @@ class Post(models.Model):
         status_inTab +=[status]
         
         return status_inTab      
-    
-    
-    
-     
-      
+
     
     def __str__(self):
         return self.title
@@ -97,7 +95,4 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('post-detail', kwargs={"pk": self.pk})        
     
-class Task(models.Model):
-    name = models.CharField(max_length=128)
-    users = models.ManyToManyField(User, related_name='tasks')
         
