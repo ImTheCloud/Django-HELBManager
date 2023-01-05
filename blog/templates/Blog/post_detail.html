@@ -61,7 +61,7 @@
             {% endfor %}
           
             {% for status in object.get_all_status %}    
-              <div class="list" id="list{{ forloop.counter }}">{{ status }}</div>
+              <div class="list" id="list-{{ forloop.counter }}">{{ status }}</div>
             {% endfor %} 
   
             </div>
