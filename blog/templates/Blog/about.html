@@ -1,49 +1,77 @@
 {% extends "blog/base.html" %}
 {% block content %}
 
-<h6 class="user-connected" >{{ user }}</h6>
+
+<div class="chat-container">
+  <h6 class="user-connected">{{ user }}</h6>
+ 
+    <div id="chat" class="chat1"></div>
+    <form>
+      <input type="text" id="message" />
+      <button type="button" id="send">Send</button>
+      <button type="button" id="delete-btn">Delete</button>
+    </form>
+
+</div>
 
 
-<div id="chat"</div>
-        <form>
-            <input type="text" id="message" />
-            <button type="button" id="send">Send</button>
-            <button type="button" id="delete-btn">Delete last message</button>
-        </form> 
+
 
 <script>
 const userNameElement = document.querySelector('.user-connected');
 const userName = userNameElement.textContent;
-const input = document.getElementById('message');
-const chatDiv = document.getElementById('chat');
-const sendButton = document.getElementById('send');
-const deleteButton = document.getElementById('delete-btn');
 
-chatDiv.style.overflow = 'scroll';
-chatDiv.style.height = '400px';
+let input = document.getElementById("message");
+let chatDiv = document.getElementById("chat");
+chatDiv.style.overflow = "scroll";
+chatDiv.style.height = "400px";
 
-let messages = JSON.parse(localStorage.getItem('messages')) || [];
+// Charge les messages du chat depuis le stockage local
+let messages = loadMessages();
 
-messages.forEach(message => {
-  chatDiv.innerHTML += `${message}<br>`;
-});
+// Affiche les messages du chat
+for (let i = 0; i < messages.length; i++) {
+  chatDiv.innerHTML += messages[i] + "<br>";
+}
 
-sendButton.addEventListener('click', () => {
-  const date = new Date();
-  const time = date.toLocaleTimeString();
-  const message = input.value;
-  const fullMessage = `${userName} (${time}): ${message}`;
+let sendButton = document.getElementById("send");
+sendButton.addEventListener("click", function() {
+  // Récupère le message et le nom de l'utilisateur
+  let message = input.value;
+  let date = new Date();
+  let time = date.toLocaleTimeString();
 
+  // Affiche le message avec le nom de l'utilisateur et l'heure
+  let fullMessage = userName + " (" + time + ") : " + message;
+  chatDiv.innerHTML += fullMessage + "<br>";
+
+  // Ajoute le message au tableau de messages et enregistre les messages dans le stockage local
   messages.push(fullMessage);
-  localStorage.setItem('messages', JSON.stringify(messages));
-  chatDiv.innerHTML += `${fullMessage}<br>`;
+  saveMessages(messages);
 });
 
-deleteButton.addEventListener('click', () => {
-  const lastMessage = messages.pop();
-  localStorage.setItem('messages', JSON.stringify(messages));
-  chatDiv.innerHTML = chatDiv.innerHTML.replace(`${lastMessage}<br>`, '');
+// Fonction qui charge les messages du chat depuis le stockage local
+function loadMessages() {
+  return JSON.parse(localStorage.getItem("messages")) || [];
+}
+
+// Fonction qui enregistre les messages du chat dans le stockage local
+function saveMessages(messages) {
+  localStorage.setItem("messages", JSON.stringify(messages));
+}
+
+document.getElementById("delete-btn").addEventListener("click", function() {
+  // Récupère le dernier message du tableau de messages
+  let lastMessage = messages[messages.length - 1];
+  // Supprime le dernier message du tableau de messages
+  messages.pop();
+  // Enregistre les messages mis à jour dans le stockage local
+  saveMessages(messages);
+  // Supprime le dernier message du chat en utilisant la chaîne de caractères du message
+  chatDiv.innerHTML = chatDiv.innerHTML.replace(lastMessage + "<br>", "");
 });
+
+
 </script>
 
 
