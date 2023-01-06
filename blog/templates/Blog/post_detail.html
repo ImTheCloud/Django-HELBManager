@@ -13,26 +13,71 @@
 
       {% if object.author == user %}
       <div>
-      <a class="btn btn_secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Update</a>
-      <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete</a>
+        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete the project</a>
+        <a class="btn btn_secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}" onclick="saveMessage()">Update</a>
+
+{% comment %} <button onclick="clearLocalStorage()">clears notifications of changes</button> {% endcomment %}
+
+<div id="updateProject"></div>
+
+<script>
+
+  function saveMessage() {
+    const updateProject = document.getElementById('updateProject');
+    if (updateProject) {
+      const date = new Date();
+      updateProject.innerHTML += `<li>The project has been updated on ${date.toLocaleDateString()} at ${date.toLocaleTimeString()}.</li>`;
+      localStorage.setItem('message', updateProject.innerHTML);
+    }
+  }
+
+  function clearLocalStorage() {
+    localStorage.clear();
+    document.getElementById('updateProject').innerHTML = '';
+  }
+  
+  // On page load, check if there is a saved message and display it
+  const savedMessage = localStorage.getItem('message');
+  if (savedMessage) {
+    document.getElementById('updateProject').innerHTML = `<ul>${savedMessage}</ul>`;
+  }
+  
+</script>
+
+
+
+      
+      
+
+     
       </div>
       {% endif %}
-
-
-
-
 
       <h2 class="article-title"> {{ object.title }}</h2>
       <p>Project leader :  {{ object.author }}</p>
       <p>Contributor : {{ object.get_all_contributor }}</p>
-      
-      
-  
-     
-      
+    
       
       {% if  object.author == user %}
+
+      <div class="chat-container">
+        <h6 class="user-connected">{{ user }}</h6>
+      
+        <form id="message-form">
+       
+         
+          <input type="text" id="message" /> </br>
+          <button type="submit" id="send">Send</button>
+
+        </form>
+        <ul id="chat" class="chat1"></ul>
+        <button type="btn btn-danger btn-sm mt-1 mb-1" id="delete-btn">Delete last</button>
+        <button type="btn btn-danger btn-sm mt-1 mb-1" id="delete-all-btn">Delete All</button>
      
+      
+      </div>
+     
+      
       <div class="priority">
         <h4>Here is the order in which the tasks must be performed according to {{ object.author }}</h4>
 
@@ -70,6 +115,19 @@
 
         {% for Contributor in object.get_all_contributor %}
         {% if Contributor == user.username %}
+
+        <div class="chat-container">
+          <h6 class="user-connected">{{ user }}</h6>
+        
+          <form id="message-form">
+            <input type="text" id="message" /> </br>
+          <button type="submit" id="send">Send</button>
+          </form>
+          <ul id="chat" class="chat1"></ul>
+        
+       
+        
+        </div>
         <div class="priority">
           <h4>Here is the order in which the tasks must be performed according to {{ object.author }}</h4>
   

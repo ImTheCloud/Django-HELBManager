@@ -96,7 +96,52 @@ for (let j = 0; j < lists.length; j++) {
   window.addEventListener('load', restoreDraggedItemLocations);
 
 
-
-
+// // ////////////////////////////////////////////////////////////////////////////////////////
+  const userName = document.querySelector('.user-connected').textContent;
+  const input = document.getElementById("message");
+  const chatDiv = document.getElementById("chat");
+  const sendButton = document.getElementById("send");
+  const deleteButton = document.getElementById("delete-btn");
+  const deleteAllButton = document.getElementById("delete-all-btn");
   
+  let messages = loadMessages();
+  displayMessages();
+  
+  sendButton.addEventListener("click", sendMessage);
+  deleteButton.addEventListener("click", deleteMessage);
+  deleteAllButton.addEventListener("click", deleteAllMessages);
+  
+  function displayMessages() {
+    chatDiv.innerHTML = messages.join("<br>");
+  }
+  
+  function sendMessage() {
+    let message = input.value;
+    let fullMessage = `${userName} : ${message}`;
+    messages.push(fullMessage);
+    saveMessages(messages);
+    displayMessages();
+  }
+  
+  function deleteMessage() {
+    messages.pop();
+    saveMessages(messages);
+    displayMessages();
+  }
+  
+  function deleteAllMessages() {
+    messages = [];
+    saveMessages(messages);
+    displayMessages();
+  }
+  
+  function loadMessages() {
+    return JSON.parse(localStorage.getItem("messages")) || [];
+  }
+  
+  function saveMessages(messages) {
+    localStorage.setItem("messages", JSON.stringify(messages));
+  }  
+
+
   
