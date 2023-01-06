@@ -6,7 +6,7 @@
 
 const list_items = document.querySelectorAll('.list-item');
 const lists = document.querySelectorAll('.list');
-const consoleDiv = document.querySelector('.console');
+const consoleDiv = document.querySelector('.notification');
 
 // Function to save the element's location to local storage
 function saveDraggedItemLocation(e) {
@@ -16,13 +16,14 @@ function saveDraggedItemLocation(e) {
   // Check that the dragged item is defined and that the target element is a list
   if (draggedItem && targetList.matches('.list')) {
     localStorage.setItem(draggedItem.id, targetList.id);
-    consoleDiv.innerHTML += `The status of task ${draggedItem.id}  has been moved to ${targetList.id}</br>`
+    consoleDiv.innerHTML += `The status of task ${draggedItem.id}  has been moved to ${targetList.id} by ${userName}</br>`
     targetList.append(draggedItem);
   
     // Save the console message to local storage
     localStorage.setItem('consoleMessage', consoleDiv.innerHTML);
   }
 }
+
   consoleDiv.innerHTML = localStorage.getItem('consoleMessage');
 
 
