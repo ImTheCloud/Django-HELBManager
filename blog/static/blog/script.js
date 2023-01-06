@@ -1,53 +1,41 @@
-//1 : https://www.youtube.com/watch?v=tZ45HZAkbLc voici la video d'ou j'ai pu effectuer le drag & drop mais, il est modifier
-// car l'enregistrement ne se faisait pas lorsque je rafraichissait la page, il y a egalement des commentaire d'explication 
-
-
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//https://www.youtube.com/watch?v=tZ45HZAkbLc voici la video d'ou j'ai pu effectuer le drag & drop mais, il est modifier
+// car l'enregistrement ne se faisait pas lorsque je rafraichissait la page
+// Afin de réussir l'enregistrement j'ai du ajouté un stochage local a chaque rafraichissement de page.
+//Drag & drop :
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const list_items = document.querySelectorAll('.list-item');
 const lists = document.querySelectorAll('.list');
 const consoleDiv = document.querySelector('.notification');
 
-// Function to save the element's location to local storage
+// Function pour sauvegarder les elemetns dans le stockage local
 function saveDraggedItemLocation(e) {
   e.preventDefault();
-
   const targetList = e.target;
-  // Check that the dragged item is defined and that the target element is a list
   if (draggedItem && targetList.matches('.list')) {
     localStorage.setItem(draggedItem.id, targetList.id);
     consoleDiv.innerHTML += `The status of task ${draggedItem.id}  has been moved to ${targetList.id} by ${userName}</br>`
     targetList.append(draggedItem);
-  
-    // Save the console message to local storage
     localStorage.setItem('consoleMessage', consoleDiv.innerHTML);
   }
 }
-
-  consoleDiv.innerHTML = localStorage.getItem('consoleMessage');
-
-
+consoleDiv.innerHTML = localStorage.getItem('consoleMessage');
 
 
 // Fonction pour restaurer l'emplacement de chaque élément de liste en se basant sur les données enregistrées dans le stockage local
 function restoreDraggedItemLocations() {
   console.log('restoreDraggedItemLocations function called');
-  // Récupérer tous les éléments de liste de l'application
   const list_items = document.querySelectorAll('.list-item');
-
-  // Pour chaque élément de liste, récupérer son emplacement enregistré dans le stockage local
   for (const list_item of list_items) {
-    // Récupérer l'emplacement enregistré dans le stockage local pour l'élément de liste courant
     const location = localStorage.getItem(list_item.id);
     console.log(`location for ${list_item.id}: ${location}`);
     // Si un emplacement a été enregistré pour cet élément, ajouter l'élément à l'élément de liste correspondant
     if (location) {
-      // Récupérer l'élément de liste cible à partir de son ID
       const targetList = document.getElementById(location);
       // Vérifier que l'élément cible est bien une liste
       if (targetList.classList.contains('list')) {
         console.log(`adding ${list_item.id} to ${location}`);
-        // Ajouter l'élément de liste courant à l'élément de liste cible
         targetList.append(list_item);
       }
     }
@@ -55,12 +43,12 @@ function restoreDraggedItemLocations() {
 }
 
 
-// Ajouter des gestionnaires d'événements de glisser-déposer aux éléments de liste
+// Ajouter des gestionnaires d'événements du drag & drop  aux éléments de liste
 for (let i = 0; i < list_items.length; i++) {
   // Récupérer l'élément de liste courant
   const item = list_items[i];
   item.addEventListener('dragstart', function () {
-    // Définir l'élément de liste courant comme l'élément glissé-déposé
+    // Définir l'élément de liste courant comme l'élément drag & drop 
     draggedItem = item;
     setTimeout(function () {
       item.style.display = 'none';
@@ -77,7 +65,7 @@ for (let i = 0; i < list_items.length; i++) {
   });
 }
 
-// Ajouter des gestionnaires d'événements dedrag & drop aux éléments de liste
+// Ajouter des gestionnaires d'événements du drag & drop aux éléments de liste
 for (let j = 0; j < lists.length; j++) {
   const list = lists[j];
   list.addEventListener('dragover', function (e) {
@@ -96,53 +84,63 @@ for (let j = 0; j < lists.length; j++) {
   // Lorsque la page est chargée, restaurer l'emplacement de chaque élément glissé-déposé en se basant sur les données enregistrées dans le stockage local
   window.addEventListener('load', restoreDraggedItemLocations);
 
-
-// // ////////////////////////////////////////////////////////////////////////////////////////
-  const userName = document.querySelector('.user-connected').textContent;
-  const input = document.getElementById("message");
-  const chatDiv = document.getElementById("chat");
-  const sendButton = document.getElementById("send");
-  const deleteButton = document.getElementById("delete-btn");
-  const deleteAllButton = document.getElementById("delete-all-btn");
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+// Le chat : 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
-  let messages = loadMessages();
-  displayMessages();
+const userName = document.querySelector('.user-connected').textContent;
+const input = document.getElementById("message");
+const chatDiv = document.getElementById("chat");
+const sendButton = document.getElementById("send");
+const deleteButton = document.getElementById("delete-btn");
+const deleteAllButton = document.getElementById("delete-all-btn");
   
-  sendButton.addEventListener("click", sendMessage);
-  deleteButton.addEventListener("click", deleteMessage);
-  deleteAllButton.addEventListener("click", deleteAllMessages);
+// messages enregistrés dans le stockage local
+let messages = loadMessages();
+displayMessages();
   
-  function displayMessages() {
+sendButton.addEventListener("click", sendMessage);
+deleteButton.addEventListener("click", deleteMessage);
+deleteAllButton.addEventListener("click", deleteAllMessages);
+  
+// Affiche les messages sur la page
+function displayMessages() {
     chatDiv.innerHTML = messages.join("<br>");
-  }
+}
   
-  function sendMessage() {
+// Envoie un message au chat
+function sendMessage() {
     let message = input.value;
     let fullMessage = `${userName} : ${message}`;
     messages.push(fullMessage);
     saveMessages(messages);
     displayMessages();
-  }
-  
+}
+  // Supprime le dernier message du chat
   function deleteMessage() {
-    messages.pop();
-    saveMessages(messages);
-    displayMessages();
+    {
+      messages.pop();
+      saveMessages(messages);
+      displayMessages();
   }
-  
+}
+    
+  // Supprime tous les messages du chat
   function deleteAllMessages() {
-    messages = [];
-    saveMessages(messages);
-    displayMessages();
+      messages = [];
+      saveMessages(messages);
+      displayMessages();
   }
-  
+    
+  // Messages enregistrés dans le stockage local
   function loadMessages() {
-    return JSON.parse(localStorage.getItem("messages")) || [];
+      return JSON.parse(localStorage.getItem("messages")) || [];
   }
-  
+    
+  // Enregistre les messages dans le stockage local
   function saveMessages(messages) {
-    localStorage.setItem("messages", JSON.stringify(messages));
-  }  
+      localStorage.setItem("messages", JSON.stringify(messages));
+  }
 
 
   

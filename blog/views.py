@@ -20,7 +20,7 @@ def home(request):
 
 class PostListView(ListView):
     model = Post
-    template_name = 'blog/home.html' # <app>/<model>_<viewtype>.html
+    template_name = 'blog/home.html'
     context_object_name = 'posts'
     ordering = ['-date_posted']
     
@@ -49,12 +49,8 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     
     def test_func(self):
         post = self.get_object()
-       
-        #if self.request.user == post.author:
-
         return True
-    
-        #return False
+
     
 class PostDeleteView(LoginRequiredMixin , UserPassesTestMixin, DeleteView):
     model = Post
@@ -65,6 +61,3 @@ class PostDeleteView(LoginRequiredMixin , UserPassesTestMixin, DeleteView):
         if self.request.user == post.author:
             return True
         return False
-
-def about(request):
-	return render(request, 'blog/about.html', {'title': 'about'})

@@ -1,177 +1,147 @@
 {% extends "blog/base.html" %}
 
 {% block content %} 
+<article class="media content-section">
+  <img class="rounded-circle article-img" src="{{ object.author.profile.image.url}}">
+  <div class="media-body">
+  <div class="article-metadata">
 
-       <article class="media content-section">
-        <img class="rounded-circle article-img" src="{{ object.author.profile.image.url}}">
-    <div class="media-body">
-    <div class="article-metadata">
-      <a class="mr-2" href="#">{{ object.author }}</a>
-      <small class="text-muted">{{ object.date_posted|date:"F d,Y" }}</small>
-      <p>________________________________________________________________________________________________________</p>
+     <a class="mr-2" href="#">{{ object.author }}</a>
+     <small class="text-muted">{{ object.date_posted|date:"F d,Y" }}</small>
+     <h2 class="article-title"> {{ object.title }}</h2>
 
-     
-      {% if object.author == user %}
-      <div>
+     <p>Project leader :  {{ object.author }}</p>
+     <p>Contributor : {{ object.get_all_contributor }}</p>
+
+     {% comment %} Si l'utilisateur connecté est l'autheur du projet {% endcomment %}
+     {% if  object.author == user %}
+     <div>
         <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete the project</a>
         <a class="btn btn_secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}" onclick="saveMessage()">Update</a>
+     </div>
+     <div id="updateProject"></div>
+     </br>
 
-{% comment %} <button onclick="clearLocalStorage()">clears notifications of changes</button> {% endcomment %}
-      
+     {% comment %}Priorite {% endcomment %}
+     <div class="priority">
+        <h4>Here is the order in which the tasks must be performed according to {{ object.author }}</h4>
+        {% for priority in object.get_all_priority %}    
+        <div>{{ priority }}</div>
+        {% endfor %} 
+     </div>
+     </br>
 
-     
-      </div>
-      {% endif %}
+     {% comment %}Notification {% endcomment %}
+     <h4>Notifications</h4>
+     <div class="notification">  </div>
+     <button class="btn btn-danger btn-sm mt-1 mb-1" onclick="clearConsole()">Deletes notifications</button>
+     {% comment %} Le Drag & Drop : {% endcomment %}
+     <div class="app">
+        <div class="lists">
+           {% for task_subtask in object.get_all_tasks %}
+           <div class="list-item" id="item-{{ forloop.counter }}" draggable="true">{{ forloop.counter }} : {{ task_subtask }}</div>
+           {% endfor %}
+           {% for status in object.get_all_status %}    
+           <div class="list" id="list{{ forloop.counter }}">{{ status }}</div>
+           {% endfor %} 
+        </div>
+     </div>
 
-      <h2 class="article-title"> {{ object.title }}</h2>
-      <p>Project leader :  {{ object.author }}</p>
-      <p>Contributor : {{ object.get_all_contributor }}</p>
-    
-      
-      {% if  object.author == user %}
-
-      <div class="chat-container">
+     {% comment %} Le chat : {% endcomment %}
+     <div class="chat-container">
         <h6 class="user-connected">{{ user }}</h6>
-        <div id="updateProject"></div>
         <form id="message-form">
-       
-         
-          <input type="text" id="message" /> </br>
-          <button type="submit" id="send">Send</button>
-
+           <input type="text" id="message" /> </br>
+           <button type="submit" id="send">Send</button>
         </form>
+
         <ul id="chat" class="chat1"></ul>
         <button type="btn btn-danger btn-sm mt-1 mb-1" id="delete-btn">Delete last</button>
         <button type="btn btn-danger btn-sm mt-1 mb-1" id="delete-all-btn">Delete All</button>
-     
-      
-      </div>
-     
-      
-      <div class="priority">
-        <h4>Here is the order in which the tasks must be performed according to {{ object.author }}</h4>
+     </div>
 
-      {% for priority in object.get_all_priority %}    
-          <div>{{ priority }}</div>
-      {% endfor %} 
-      
-    </div>
-    </br>
-    <h4>Notifications</h4>
-      <div class="notification">  </div>
-      <button class="btn btn-danger btn-sm mt-1 mb-1" onclick="clearConsole()">Deletes notifications</button>
+     {% else %}
 
-        <script>
-        function clearConsole() {
-          consoleDiv.innerHTML = '';
-        }
-        </script>  
+     {% comment %} Pour les collaborateurs : {% endcomment %}
+     {% for Contributor in object.get_all_contributor %}
+     {% if Contributor == user.username %}
+     <div id="updateProject"></div>
+     {% comment %}Priorite {% endcomment %}
+  </div>
+  <div class="priority">
+     <h4>Here is the order in which the tasks must be performed according to {{ object.author }}</h4>
 
+     {% for priority in object.get_all_priority %}    
+     <div>{{ priority }}</div>
+     {% endfor %} 
+  </div>
+  </br>
 
-      <div class="app">
-        <div class="lists">
-  
-          {% for task_subtask in object.get_all_tasks %}
-            <div class="list-item" id="item-{{ forloop.counter }}" draggable="true">{{ forloop.counter }} : {{ task_subtask }}</div>
-          {% endfor %}
-        
-          {% for status in object.get_all_status %}    
-            <div class="list" id="list{{ forloop.counter }}">{{ status }}</div>
-          {% endfor %} 
+  {% comment %} Notification {% endcomment %}
+  <h4>Notifications</h4>
+  <div class="notification"> </div>
 
-          </div>
-        </div>
-
+  {% comment %} Le Drag & Drop : {% endcomment %}
+  <div class="app">
+     <div class="lists">
+        {% for i in object.get_all_tasks %}
+        {% if user.username in i %}
+        <div class="list-item" id="item-{{ forloop.counter }}" draggable="true">{{ forloop.counter }} : {{ i }}</div>
         {% else %}
-
-        {% for Contributor in object.get_all_contributor %}
-        {% if Contributor == user.username %}
-        
-        <div id="updateProject"></div>
-
-
-        <div class="chat-container">
-          <h6 class="user-connected">{{ user }}</h6>
-        
-          <form id="message-form">
-            <input type="text" id="message" /> </br>
-          <button type="submit" id="send">Send</button>
-          </form>
-          <ul id="chat" class="chat1"></ul>
-        
-       
-        
-        </div>
-        <div class="priority">
-          <h4>Here is the order in which the tasks must be performed according to {{ object.author }}</h4>
-  
-        {% for priority in object.get_all_priority %}    
-            <div>{{ priority }}</div>
-        {% endfor %} 
-      </div>
-      </br>
-      <h4>Notifications</h4>
-      <div class="notification"> </div>
-
-        
-        <div class="app">
-          <div class="lists">
-    
-            {% for i in object.get_all_tasks %}
-      
-            {% if user.username in i %}
-              <div class="list-item" id="item-{{ forloop.counter }}" draggable="true">{{ forloop.counter }} : {{ i }}</div>
-              {% else %}
-              <div class="list-item" id="item-{{ forloop.counter }}" >{{ forloop.counter }} : {{ i }}</div>
-            {% endif %}
-
-          {% endfor %}
-          
-          
-
-          
-          
-            
-          
-            {% for statuts in object.get_all_status %}    
-              <div class="list" id="list{{ forloop.counter }}">{{ statuts }}</div>
-            {% endfor %} 
-  
-            </div>
-          </div>
-             
-             {% endif %}
+        <div class="list-item" id="item-{{ forloop.counter }}" >{{ forloop.counter }} : {{ i }}</div>
+        {% endif %}
+        {% endfor %}
+        {% for statuts in object.get_all_status %}    
+        <div class="list" id="list{{ forloop.counter }}">{{ statuts }}</div>
         {% endfor %} 
 
-           {% endif %}
-
+        {% comment %} Le chat : {% endcomment %}
+     </div>
+  </div>
+  <div class="chat-container">
+  <h6 class="user-connected">{{ user }}</h6>
+  <form id="message-form">
+     <input type="text" id="message" /> </br>
+     <button type="submit" id="send">Send</button>
+  </form>
+  <ul id="chat" class="chat1"></ul>
+  {% endif %}
+  {% endfor %} 
+  {% endif %}
 </article>
 
 
-
 <script>
+  // Fonction pour effacer la console
+  function clearConsole() {
+      consoleDiv.innerHTML = '';
+  }
 
+  // Fonction pour enregistrer un message dans la console et le stockage local
   function saveMessage() {
-    const updateProject = document.getElementById('updateProject');
-    if (updateProject) {
-      const date = new Date();
-      updateProject.innerHTML += `<li>The project has been updated on ${date.toLocaleDateString()} at ${date.toLocaleTimeString()}.</li>`;
-      localStorage.setItem('message', updateProject.innerHTML);
-    }
+      const updateProject = document.getElementById('updateProject');
+      if (updateProject) {
+          const date = new Date();
+          const newMessage = document.createElement('li');
+          newMessage.textContent = `Le projet a été mis à jour le ${date.toLocaleDateString()} à ${date.toLocaleTimeString()}.`;
+          updateProject.appendChild(newMessage);
+          // Enregistre le contenu de l'élément "updateProject" dans le local storage
+          localStorage.setItem('message', updateProject.innerHTML);
+      }
   }
 
-  function clearLocalStorage() {
-    localStorage.clear();
-    document.getElementById('updateProject').innerHTML = '';
-  }
-  
-  // On page load, check if there is a saved message and display it
+  // Au chargement de la page, vérifie si un message a été enregistré et l'affiche
   const savedMessage = localStorage.getItem('message');
   if (savedMessage) {
-    document.getElementById('updateProject').innerHTML = `<ul>${savedMessage}</ul>`;
+      const updateProject = document.getElementById('updateProject');
+      if (updateProject) {
+          // Définit le contenu de l'élément "updateProject" avec le message enregistré
+          updateProject.innerHTML = `<ul>${savedMessage}</ul>`;
+      }
   }
-  
 </script>
+
+
 
 
 {% endblock %}

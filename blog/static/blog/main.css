@@ -115,6 +115,7 @@ ul {
   border: 1px solid #dddddd;
   border-radius: 3px;
   margin-bottom: 20px;
+  max-width: 1300px;
 }
 
 .article-title {
@@ -128,6 +129,7 @@ a.article-title:hover {
 
 .article-content {
   white-space: pre-line;
+  
 }
 
 .article-img {
@@ -190,6 +192,7 @@ a.article-title:hover {
   padding: 0 10px;
   font-size: 14px;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
 }
 
 .chat-container button {
@@ -203,6 +206,7 @@ a.article-title:hover {
   cursor: pointer;
   transition: background-color 0.3s;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+  max-width: 250px;
 }
 
 .chat-container button:hover {
