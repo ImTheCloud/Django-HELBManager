@@ -2,16 +2,18 @@
 {% block content %}
 
 
+
 <div class="chat-container">
   <h6 class="user-connected">{{ user }}</h6>
- 
-    <div id="chat" class="chat1"></div>
-    <form>
-      <input type="text" id="message" />
-      <button type="button" id="send">Send</button>
-      <button type="button" id="delete-btn">Delete</button>
-    </form>
 
+  <form id="message-form">
+    <button type="submit" id="send">Send</button>
+    {% if user.username == 'ClaudiuAdmin' %}
+    <button type="button" id="delete-btn">Delete</button>
+    {% endif %}
+    <input type="text" id="message" />
+  </form>
+  <ul id="chat" class="chat1"></ul>
 </div>
 
 
@@ -22,28 +24,35 @@ const userNameElement = document.querySelector('.user-connected');
 const userName = userNameElement.textContent;
 
 let input = document.getElementById("message");
-let chatDiv = document.getElementById("chat");
-chatDiv.style.overflow = "scroll";
-chatDiv.style.height = "400px";
+let chatList = document.getElementById("chat");
+chatList.style.overflow = "scroll";
+chatList.style.height = "200px";
 
 // Charge les messages du chat depuis le stockage local
 let messages = loadMessages();
 
 // Affiche les messages du chat
 for (let i = 0; i < messages.length; i++) {
-  chatDiv.innerHTML += messages[i] + "<br>";
+  let li = document.createElement("li");
+  li.textContent = messages[i];
+  chatList.appendChild(li);
 }
 
-let sendButton = document.getElementById("send");
-sendButton.addEventListener("click", function() {
+let form = document.getElementById("message-form");
+form.addEventListener("submit", function(event) {
+  // Empêche l'envoi du formulaire et le rechargement de la page
+  event.preventDefault();
+
   // Récupère le message et le nom de l'utilisateur
   let message = input.value;
   let date = new Date();
-  let time = date.toLocaleTimeString();
+
 
   // Affiche le message avec le nom de l'utilisateur et l'heure
-  let fullMessage = userName + " (" + time + ") : " + message;
-  chatDiv.innerHTML += fullMessage + "<br>";
+  let fullMessage = userName + " send : " + message;
+  let li = document.createElement("li");
+  li.textContent = fullMessage;
+  chatList.appendChild(li);
 
   // Ajoute le message au tableau de messages et enregistre les messages dans le stockage local
   messages.push(fullMessage);
@@ -61,16 +70,15 @@ function saveMessages(messages) {
 }
 
 document.getElementById("delete-btn").addEventListener("click", function() {
-  // Récupère le dernier message du tableau de messages
-  let lastMessage = messages[messages.length - 1];
-  // Supprime le dernier message du tableau de messages
-  messages.pop();
+  // Supprime tous les messages du tableau de messages
+  messages = [];
   // Enregistre les messages mis à jour dans le stockage local
   saveMessages(messages);
-  // Supprime le dernier message du chat en utilisant la chaîne de caractères du message
-  chatDiv.innerHTML = chatDiv.innerHTML.replace(lastMessage + "<br>", "");
+  // Supprime tous les éléments de la liste de chat
+  while (chatList.firstChild) {
+    chatList.removeChild(chatList.firstChild);
+  }
 });
-
 
 </script>
 

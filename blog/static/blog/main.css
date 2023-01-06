@@ -18,18 +18,27 @@ body {
 	height: 100vh;
 }
 
+h4 {
+  color: red;
+  font-weight: bold;
+}
+
+
   .console {
     background-color: #f1f1f1;
     border: 1px solid #ccc;
     border-radius: 4px;
-    padding: 20px;
+  
+    padding: 10px;
   }
 
   .priority {
     background-color: #f1f1f1;
     border: 1px solid #ccc;
     border-radius: 4px;
-    padding: 20px;
+    padding: 10px;
+    color: red;
+    font-weight: bold;
   }
 
 header {
@@ -51,15 +60,15 @@ header {
 	flex-flow: column;
 	flex: 1;
 
-	width: 100%;
-	min-width: 250px;
-	max-width: 350px;
+  width: 100%;
+  min-width: 250px;
+  max-width: 250px;
 	height: 100%;
 	min-height: 150px;
 
 	background-color: rgba(0, 0, 0, 0.1);
 	margin: 0 15px;
-	padding: 8px;
+	padding: 5px;
 	transition: all 0.2s linear;
 }
 

@@ -13,6 +13,18 @@ from .models import Post
 from django import forms
 
 
+def my_view(request):
+    # Déterminez si l'utilisateur connecté est un administrateur
+    is_admin = request.user.is_staff
+
+    # Créez le contexte de votre modèle en incluant la variable is_admin
+    context = {'is_admin': is_admin}
+
+    # Rendez la page HTML en utilisant le contexte
+    return render(request, 'blog/about.html', context)
+
+
+
 def home(request):
 	context = {
 		'posts' : Post.objects.all()
