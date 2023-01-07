@@ -1,0 +1,38 @@
+Bob@gmail.com
+Cesar@gmail.com
+Alice@gmail.com
+
+
+helbManager
+
+----------------------------------------------------------------------------------
+
+HelbManager
+
+Bob;Cesar
+
+
+1.Rédaction de l’introduction. -Bob;
+2.Recherche de documentation sur les app de vente de produits. -Alice;
+3.Implémentation de l’application mobile. -Bob;
+3.1 Analyse des besoins - Bob;
+3.2 Conception - Cesar;
+3.3 Développement - Bob;
+4. Tests de l’application sur des utilisateurs réels. -Cesar;
+5. Rédaction des résultats des tests. -Cesar;
+6. Rédaction de la conclusion. -Bob
+
+TODO;
+IN PROGRESS;
+DONE;
+IN REVISION
+
+3.Implémentation de l’application mobile. -Bob;
+3.1 Analyse des besoins - Bob;
+3.2 Conception - Cesar;
+3.3 Développement - Bob;
+4. Tests de l’application sur des utilisateurs réels. -Cesar;
+5. Rédaction des résultats des tests. -Cesar;
+6. Rédaction de la conclusion. -Bob
+1.Rédaction de l’introduction. -Bob;
+2.Recherche de documentation sur les app de vente de produits. -Alice;
