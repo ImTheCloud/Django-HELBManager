@@ -14,10 +14,12 @@
      <p>Contributor : {{ object.get_all_contributor }}</p>
 
      {% comment %} Si l'utilisateur connecté est l'autheur du projet {% endcomment %}
+     
      {% if  object.author == user %}
      <div>
         <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete the project</a>
         <a class="btn btn_secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}" onclick="saveMessage()">Update</a>
+       
      </div>
      <div id="updateProject"></div>
      </br>
@@ -72,7 +74,7 @@
      <h4>Here is the order in which the tasks must be performed according to {{ object.author }}</h4>
 
      {% for priority in object.get_all_priority %}    
-     <div>{{ priority }}</div>
+         <div>{{ priority }}</div>
      {% endfor %} 
   </div>
   </br>
@@ -98,6 +100,7 @@
         {% comment %} Le chat : {% endcomment %}
      </div>
   </div>
+
   <div class="chat-container">
   <h6 class="user-connected">{{ user }}</h6>
   <form id="message-form">
@@ -123,7 +126,7 @@
       if (updateProject) {
           const date = new Date();
           const newMessage = document.createElement('li');
-          newMessage.textContent = `Le projet a été mis à jour le ${date.toLocaleDateString()} à ${date.toLocaleTimeString()}.`;
+          newMessage.textContent = `The project was updated on ${date.toLocaleDateString()}  at ${date.toLocaleTimeString()}.`;
           updateProject.appendChild(newMessage);
           // Enregistre le contenu de l'élément "updateProject" dans le local storage
           localStorage.setItem('message', updateProject.innerHTML);
